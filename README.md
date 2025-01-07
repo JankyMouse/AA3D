@@ -1,4 +1,4 @@
-MV3D V0.9.2.7 Premium (by Cutievirus/Ella), AlphaABS V1250 [PRO] (by Kage Desu), and QMovement V1.6.3 (by Quxios) compatibility and feature expansion patch.
+MV3D V0.9.2.7 Premium (by Cutievirus/Ella), AlphaABS V1250 [PRO] (by Kage Desu), and QMovement V1.6.3 (by Quxios) compatibility and feature expansion patch:
 
 Finally got mostly everything working. This patch aims to fix all the major hang ups whether it be combat, combat smoothness, combat making enemies fly up into the ether.., mouse interfacing, gamepad interfacing, skill interfacing, model animations for skills and items and probably a bunch of other stuff I'm forgetting. I think I've got the patch into a workable enough state to release a beta so peeps can tinker with it if they want. There's a couple things that still need some time to cook. I will post again soon when I make some more progress and try to do some kind of setup video. Working on getting some public repos up so all my stuff can be found.
 
