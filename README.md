@@ -10,8 +10,8 @@ AlphaABS
 AA3D
 
 Documentation
-MV3D - https://cutievirus.com/docs/mv3d/#getting-started
-AlphaABS - https://github.com/KageDesu/Alpha-ABS/wiki
+MV3D - https://cutievirus.com/docs/mv3d/#getting-started<br>
+AlphaABS - https://github.com/KageDesu/Alpha-ABS/wiki<br>
 QMovement - https://quxios.github.io/plugins/QMovement
 
 CrossFeatures
