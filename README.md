@@ -20,12 +20,14 @@ Added handling for 3D model actions for all ABS Skills and Items. Game Player + 
 
 3D Model/Sprite/3D Particle Projectiles:<br>
 Added handling for 3D model(Experimental), 3D sprite, or 3D particle projectiles. Just plug the name of your projectile model (that goes in your "Models" folder) into <img:> skill parameter n your skill/weapon notetags. For models, AA3D will  use the first NLA track and loop it.<br>
+
 For sprites, AA3D will project a flat sprite into the 3D space and setup is the same as it's original behavior. Append "_frames" to the img name to define the amount of animation frames. i.e. <img:Attack_3> where 3 means it has 3 frames of animation. The file for sprite mode still needs to go in "Pictures" folder.<br>
-Added Ver 0.9: Particle Projectiles<br>
+
+(Added Ver 0.9)<br>
 For particles, you can use the particle editor here https://playground.babylonjs.com/#M7MYT8#11 and then save the particle system to a JSON file. Save it to a "particles" folder in the root directory of your game (same place the mv3d folder is). Then, "edit" the associated textures for the particle system so you can save them to the particles folder aswell. Make sure the JSON file and texture has the same name. Finally, define which weapons or skills you want to add the particle projectile with the <img> notetag in the datebase. Once you get comfortable with the editor, you can open the JSON file to study the formatting to make more advanced custom particle systems.<br>
 
-Added Ver 0.9: Define 3D Model/Sprite/3D Particle Projectile per weapon and skill<br>
-Define projectile type with the <projectile> note tag in the weapons or skills database. (i.e <projectile:particle>)
+(Added Ver 0.9)<br>
+Define projectile type with the <projectile> note tag in the weapons or skills database. (i.e <projectile:model>, <projectile:sprite>, or <projectile:particle>)
 Weapons and skills will default to the value selected in plugin options if not defined with a notetag.
 
 Adaptations:<br>
@@ -41,5 +43,7 @@ Integrated OrangePathFinding by Hudell. Necessary performance and enemy diagonal
 
 Collision Fixes & Z Jumping Bug Fix for QMovement:<br>
 Various collision fixes added for Game Player and Game AI Jumping, Impulse Actions (Knockbacks), and complex Impulse Actions (Knockbacks greater than 1). Z Jumping is only fixed when using Midpass (QMovement setting) and Event priority to "Below Characters".
+
+Player to Event, Player to AI, AI to Event, and AI to AI collision fixes for "Same as Player" priority.
 TODO<br>
-Fix Event to Event and Event to Player collisions. Midpass doesn't work correctly when using priority "Same as Characters" and causes AI to dance in place.
+Dancing in place has been fixed but there is still an issue that can cause AI to slip under the player if trying to pass downwards on a slope and get stuck in the AI. Adjusting mv3d:scale() is a decent workaround for now as it adjusts the colliders as well.. Still trying to sort that out as I'm pretty sure there's at least 2 collision systems working on top of eachother to a certain extent still. But ya, basically it's because of the slope. Tilting the tile causes the distance to shorten obviously. Then it thinks it's not colliding yet based on distance but it's already in the middle of the AIs collider by the time the collision check fires.
