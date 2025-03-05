@@ -42,7 +42,7 @@ Pathfinding<br>
 Integrated OrangePathFinding by Hudell. Necessary performance and enemy diagonal pathing fix.
 
 Collision Fixes & Z Jumping Bug Fix for QMovement:<br>
-Various collision fixes added for Game Player and Game AI Jumping, Impulse Actions (Knockbacks), and complex Impulse Actions (Knockbacks greater than 1). Z Jumping is only fixed when using Midpass (QMovement setting) and Event priority to "Below Characters".
+Various collision fixes added for Game Player and Game AI Jumping, Impulse Actions (Knockbacks), and complex Impulse Actions (Knockbacks greater than 1).
 
 Player to Event, Player to AI, AI to Event, and AI to AI collision fixes for "Same as Player" priority.
 TODO<br>
