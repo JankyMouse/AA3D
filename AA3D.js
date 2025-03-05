@@ -76,14 +76,23 @@ JM.AA3D.Version = 0.9;
 *i.e. <img:Attack_3> where 3 means it has 3 frames of animation. The file for 
 *sprite mode still needs to go in "Pictures" folder.
 *
-*TODO:========================================================================
-*Looking into importing particle shaders on models. Right now mv3d 
-*doesn't recognize the shaders exported from Blender. May add the ability to 
-*use custom particle systems via JSON file if I can't get that to work or if 
-*the performance ends up being really bad.
-*Still need to have the projectile change direction midflight (degreeToRad
-*based off it's currect reference point) as it's wonky when you juke short
-*ranged targeted attacks.
+*(Added Ver 0.9)
+*For particles, you can use the particle editor here 
+*https://playground.babylonjs.com/#M7MYT8#11 and then save the particle system 
+*to a JSON file. Save it to a "particles" folder in the root directory of your 
+*game (same place the mv3d folder is). Then, "edit" the associated textures for 
+*the particle system so you can save them to the particles folder aswell. Make 
+*sure the JSON file and texture has the same name. Finally, define which 
+*weapons or skills you want to add the particle projectile with the  notetag 
+*in the datebase. Once you get comfortable with the editor, you can open the 
+*JSON file to study the formatting to make more advanced custom particle 
+*systems.
+*
+*(Added Ver 0.9)
+*Define projectile type with the note tag in the weapons or skills database. 
+*(i.e projectile:model, projectile:sprite, or projectile:particle) Weapons and
+*skills will default to the value selected in plugin options if not defined 
+*with a notetag.
 *
 *==[Adaptations:]=============================================================
 *<freeDirection:1> Skill Notetags have been adapted to use the direction your 
@@ -105,12 +114,19 @@ JM.AA3D.Version = 0.9;
 *Collision Fixes & Z Jumping Bug Fix for QMovement:===========================
 *Various collision fixes added for Game Player and Game AI Jumping, Impulse
 *Actions (Knockbacks), and complex Impulse Actions (Knockbacks greater than 1).
-*Z Jumping is only fixed when using Midpass (QMovement setting) and Event
-*priority to "Below Characters". 
-*TODO:========================================================================
-*Fix Event to Event and Event to Player collisions. Midpass doesn't work 
-*correctly when using priority "Same as Characters" and causes AI to dance in 
-*place.
+*
+*Player to Event, Player to AI, AI to Event, and AI to AI collision fixes for 
+*"Same as Player" priority.
+TODO:=========================================================================
+*Dancing in place has been fixed but there is still an issue that can cause AI 
+*to slip under the player if trying to pass downwards on a slope and get stuck 
+*in the AI. Adjusting mv3d:scale() is a decent workaround for now as it adjusts 
+*the colliders as well.. Still trying to sort that out as I'm pretty sure 
+*there's at least 2 collision systems working on top of eachother to a certain 
+*extent still. But ya, basically it's because of the slope. Tilting the tile 
+*causes the distance to shorten obviously. Then it thinks it's not colliding 
+*yet based on distance but it's already in the middle of the AIs collider by 
+*the time the collision check fires.
 */
 
 //--------------------------------------------------------------------------------
