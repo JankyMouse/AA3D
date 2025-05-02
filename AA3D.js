@@ -194,8 +194,10 @@ const _SceneManager_onSceneStart = SceneManager.onSceneStart;
 SceneManager.onSceneStart = function() {
     //console.log("Wee")
     _SceneManager_onSceneStart.call(this);
+    if (Imported.QMovement) {	
     // Refresh Colliders / fixes AI starting position collisions
     ColliderManager._needsRefresh = true;
+    }
     // Set Keybind "B"
     Input.keyMapper["66"] = "myOpenInventory";  // B
 };
@@ -931,7 +933,9 @@ Scene_Map.prototype.onMapLoaded = function(){
 
   var gP = "gP";
   console.log("MAPLOADED");
+  if (Imported.QMovement) {
   ColliderManager._needsRefresh = true;
+  }
   setTimeout(() => {
     $dataWeapons.forEach(WIndex => {
       if (WIndex != null && WIndex != "null"){
