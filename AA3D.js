@@ -3,7 +3,7 @@ Imported.JM_AA3D = true;
 
 var JM = JM || {};
 JM.AA3D = JM.AA3D || {};
-JM.AA3D.Version = 0.9;
+JM.AA3D.Version = 0.9.1;
 
 /*:
 *@plugindesc Compatibility and cross-feature adaptation patch for MV3D V.9.2.7 (by Cutievirus), AlphaABS V.1250[PRO] (by Kage Desu), and QMovement (by Quxios).
@@ -182,9 +182,11 @@ const _Scene_Map_update = Scene_Map.prototype.update;
 Scene_Map.prototype.update = function() {
     //console.log("Wee")
     _Scene_Map_update.call(this);
+  if (Imported.PKD_MapInventory) {
     if(Input.isTriggered ("myOpenInventory")) PKD_MI.openOrCloseInventory(), 
       document.exitPointerLock();
-    if($gamePlayer.isMoving()) $gamePlayer._checkPlayerIsCasting();
+}
+    if($gamePlayer.isMoving() && $gamePlayer._checkPlayerIsCasting) $gamePlayer._checkPlayerIsCasting();
 };
 
 
@@ -193,7 +195,7 @@ SceneManager.onSceneStart = function() {
     //console.log("Wee")
     _SceneManager_onSceneStart.call(this);
     // Refresh Colliders / fixes AI starting position collisions
-    
+    ColliderManager._needsRefresh = true;
     // Set Keybind "B"
     Input.keyMapper["66"] = "myOpenInventory";  // B
 };
