@@ -3,7 +3,7 @@ Imported.JM_AA3D = true;
 
 var JM = JM || {};
 JM.AA3D = JM.AA3D || {};
-JM.AA3D.Version = 0.9.1;
+JM.AA3D.Version = "0.9.2";
 
 /*:
 *@plugindesc Compatibility and cross-feature adaptation patch for MV3D V.9.2.7 (by Cutievirus), AlphaABS V.1250[PRO] (by Kage Desu), and QMovement (by Quxios).
@@ -142,14 +142,11 @@ JM_AA3D.params = {
   _usePKDInventory: JSON.parse(JM_AA3D.params['_usePKDInventory'])
 };
 
-
-mv3d.Character.prototype.getPlatform = function (x = this.char._realX, y = this.char._realY, opts = {}) {
-
+if (Imported.QMovement) {
+  mv3d.Character.prototype.getPlatform = function (x = this.char._realX, y = this.char._realY, opts = {}) {
     return mv3d.getPlatformForCharacter(this, x, y, opts);
-  
+  };
 };
-
-
 
 //--------------------------------------------------------------------------------
 // GamePad Right Stick Fix TODO: Fix fav weapons circle and freedirection(original)
@@ -157,7 +154,7 @@ mv3d.Character.prototype.getPlatform = function (x = this.char._realX, y = this.
 var _alias_Input__updateGamepadState = Input._updateGamepadState;
 Input._updateGamepadState = function(gamepad) {
    _alias_Input__updateGamepadState.apply(this, arguments);
-   input_mv3d = window.mv3d;
+    const input_mv3d = window.mv3d;
     const threshold = 0.1;
     const max = 1 - threshold;
     const axes = gamepad.axes;
@@ -187,6 +184,11 @@ Scene_Map.prototype.update = function() {
       document.exitPointerLock();
 }
     if($gamePlayer.isMoving() && $gamePlayer._checkPlayerIsCasting) $gamePlayer._checkPlayerIsCasting();
+
+    if (Input.isCancel() && document.pointerLockElement) {
+      document.exitPointerLock();
+      mv3d._relockPointer = false;
+    }
 };
 
 
@@ -194,7 +196,7 @@ const _SceneManager_onSceneStart = SceneManager.onSceneStart;
 SceneManager.onSceneStart = function() {
     //console.log("Wee")
     _SceneManager_onSceneStart.call(this);
-    if (Imported.QMovement) {	
+    if (Imported.QMovement) {
     // Refresh Colliders / fixes AI starting position collisions
     ColliderManager._needsRefresh = true;
     }
@@ -205,7 +207,6 @@ SceneManager.onSceneStart = function() {
 //--------------------------------------------------------------------------------
 // Cursor/PointerLock Fixes
 
-var _Scene_Map_processMapTouch = Scene_Map.prototype.processMapTouch;
 Scene_Map.prototype.processMapTouch = function() {
   input_mv3d = window.mv3d;
   if ((TouchInput.isTriggered() && JM_AA3D.params['_usePKDInventory'] && PKD_MI.isProcessEUITouch() === false) || (TouchInput.isTriggered() && !JM_AA3D.params['_usePKDInventory'])) {
@@ -237,41 +238,43 @@ Scene_Map.prototype.isMapTouchOk = function() {
 //--------------------------------------------------------------------------------
 // Inventory Cell Dragging Fix / No longer requires long press for dragging
 
-let timeoutId;
+if (Imported.PKD_MapInventory) {
 
-document.addEventListener('mousemove', function() {
-  clearTimeout(timeoutId);
-  if (timeoutId = setTimeout(function() {
-    //console.log('Mouse movement stopped'),
-    JM.AA3D.mouseMove = false;
-  }, 70)){
-    //console.log('Mouse movement started'),
-    JM.AA3D.mouseMove = true;
-  };
-});
+  let timeoutId;
+  document.addEventListener('mousemove', function() {
+    clearTimeout(timeoutId);
+    if (timeoutId = setTimeout(function() {
+      //console.log('Mouse movement stopped'),
+      JM.AA3D.mouseMove = false;
+    }, 70)){
+      //console.log('Mouse movement started'),
+      JM.AA3D.mouseMove = true;
+    };
+  });
 
-PKD_MI.LIBS.Sprite_MapInvCell.prototype.update = function() {
-  var ref;
-  KDCore.Sprite.prototype.update.call(this);
-  if ((ref = this._checkUsableThread) != null) {
-    ref.update();
-  }
-  if ($gameTemp._pkdMICellMoving === true) {
-    return;
-  }
-  if (TouchInput.isPressed() && this.isHovered()) { // && TouchInput._onMouseMove
-    if (this.item == null) {
+  PKD_MI.LIBS.Sprite_MapInvCell.prototype.update = function() {
+    var ref;
+    KDCore.Sprite.prototype.update.call(this);
+    if ((ref = this._checkUsableThread) != null) {
+      ref.update();
+    }
+    if ($gameTemp._pkdMICellMoving === true) {
       return;
     }
-    //this._pressTimer++;
-    if (JM.AA3D.mouseMove) {
-      return this.startMovingCell();
+    if (TouchInput.isPressed() && this.isHovered()) { // && TouchInput._onMouseMove
+      if (this.item == null) {
+        return;
+      }
+      //this._pressTimer++;
+      if (JM.AA3D.mouseMove) {
+        return this.startMovingCell();
+      }
+    } else {
+      return //this._pressTimer = 0;
     }
-  } else {
-    return //this._pressTimer = 0;
   }
-}
-
+  
+};
 //--------------------------------------------------------------------------------
 // changeEquip: Game_Player Model on Equip Handler
 
@@ -1058,7 +1061,7 @@ $gameMap._events.forEach(AI => {
         }
       }
     }
-  }catch{
+  }catch (e) {
 
   }
   });
@@ -1178,7 +1181,7 @@ AlphaABS.LIBS.Game_SVector.prototype._imageToPoint = function() {
   if (!this.name || (!this.projectileNote && JM_AA3D.params['_useProjectileModel'] === 2) || this.projectileNote === "sprite") { 
     try{
       this.texture.uOffset = this._imageSpr._texture._uvs.x1;
-    }catch{
+    }catch (e) {
       this.texture.uOffset = 0;
     }
     rotDir2 = Math.PI / 2;
