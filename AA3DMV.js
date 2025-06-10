@@ -1,9 +1,9 @@
 var Imported = Imported || {};
-Imported.JM_AA3D = true;
+Imported.JM_AA3DMV = true;
 
 var JM = JM || {};
-JM.AA3D = JM.AA3D || {};
-JM.AA3D.Version = "0.9.2";
+JM.AA3DMV = JM.AA3DMV || {};
+JM.AA3DMV.Version = "0.9.2";
 
 /*:
 *@plugindesc Compatibility and cross-feature adaptation patch for MV3D V.9.2.7 (by Cutievirus), AlphaABS V.1250[PRO] (by Kage Desu), and QMovement (by Quxios).
@@ -69,8 +69,8 @@ JM.AA3D.Version = "0.9.2";
 *3D Model/Sprite Projectiles:=================================================
 *Added handling for 3D model(Experimental) or 3D sprite projectiles. Just plug
 *the name of your projectile model (that goes in your "Models" folder) into
-*<img:> skill parameter n your skill/weapon notetags. For models, AA3D will  
-*use the first NLA track and loop it. For sprites, AA3D will project a flat  
+*<img:> skill parameter n your skill/weapon notetags. For models, AA3DMV will  
+*use the first NLA track and loop it. For sprites, AA3DMV will project a flat  
 *sprite into the 3D space and setup is the same as it's originl behavior.
 *Append "_frames" to the img name to define the ammount of animation frames. 
 *i.e. <img:Attack_3> where 3 means it has 3 frames of animation. The file for 
@@ -130,16 +130,16 @@ TODO:=========================================================================
 */
 
 //--------------------------------------------------------------------------------
-// AA3D Plugin Parameters
+// AA3DMV Plugin Parameters
 
-var JM_AA3D = JM.AA3D;
-JM_AA3D.params = PluginManager.parameters("AA3D");
+var JM_AA3DMV = JM.AA3DMV;
+JM_AA3DMV.params = PluginManager.parameters("AA3DMV");
 
-JM_AA3D.params = {
-  _useWalkRunSkill: JSON.parse(JM_AA3D.params['_useWalkRunSkill']),
-  _useFreeDir: JSON.parse(JM_AA3D.params['_useFreeDir']),
-  _useProjectileModel: JSON.parse(JM_AA3D.params['_useProjectileModel']),
-  _usePKDInventory: JSON.parse(JM_AA3D.params['_usePKDInventory'])
+JM_AA3DMV.params = {
+  _useWalkRunSkill: JSON.parse(JM_AA3DMV.params['_useWalkRunSkill']),
+  _useFreeDir: JSON.parse(JM_AA3DMV.params['_useFreeDir']),
+  _useProjectileModel: JSON.parse(JM_AA3DMV.params['_useProjectileModel']),
+  _usePKDInventory: JSON.parse(JM_AA3DMV.params['_usePKDInventory'])
 };
 
 if (Imported.QMovement) {
@@ -209,7 +209,7 @@ SceneManager.onSceneStart = function() {
 
 Scene_Map.prototype.processMapTouch = function() {
   input_mv3d = window.mv3d;
-  if ((TouchInput.isTriggered() && JM_AA3D.params['_usePKDInventory'] && PKD_MI.isProcessEUITouch() === false) || (TouchInput.isTriggered() && !JM_AA3D.params['_usePKDInventory'])) {
+  if ((TouchInput.isTriggered() && JM_AA3DMV.params['_usePKDInventory'] && PKD_MI.isProcessEUITouch() === false) || (TouchInput.isTriggered() && !JM_AA3DMV.params['_usePKDInventory'])) {
     var _Graphics$_canvas$req, _Graphics$_canvas$req2;
     // requestPointerLock isn't returning a promise ????
     (_Graphics$_canvas$req = Graphics._canvas.requestPointerLock()) === null || _Graphics$_canvas$req === void 0 ? void 0 : (_Graphics$_canvas$req2 = _Graphics$_canvas$req.catch) === null || _Graphics$_canvas$req2 === void 0 ? void 0 : _Graphics$_canvas$req2.call(_Graphics$_canvas$req, console.error);
@@ -245,10 +245,10 @@ if (Imported.PKD_MapInventory) {
     clearTimeout(timeoutId);
     if (timeoutId = setTimeout(function() {
       //console.log('Mouse movement stopped'),
-      JM.AA3D.mouseMove = false;
+      JM.AA3DMV.mouseMove = false;
     }, 70)){
       //console.log('Mouse movement started'),
-      JM.AA3D.mouseMove = true;
+      JM.AA3DMV.mouseMove = true;
     };
   });
 
@@ -266,7 +266,7 @@ if (Imported.PKD_MapInventory) {
         return;
       }
       //this._pressTimer++;
-      if (JM.AA3D.mouseMove) {
+      if (JM.AA3DMV.mouseMove) {
         return this.startMovingCell();
       }
     } else {
@@ -318,19 +318,19 @@ console.log($gamePlayer.mv3d_sprite.actions, "MoveStateActions started")
   const commandName = "@p action play";
 
   if(this.isMoving() && this.isDashing()){
-    mv3d.command(commandName,JM.AA3D.actionName + "Run"); //Run
+    mv3d.command(commandName,JM.AA3DMV.actionName + "Run"); //Run
     this._inActionRunning = true;
     console.log("Run");
     return;
   }
   if(this.isMoving() && !this.isDashing()){
-    mv3d.command(commandName,JM.AA3D.actionName + "Walk"); //Walk
+    mv3d.command(commandName,JM.AA3DMV.actionName + "Walk"); //Walk
     this._inActionMoving = true;
     console.log("Walk");
     return;
   }
   if(!this.isMoving()){
-    mv3d.command(commandName,JM.AA3D.actionName);
+    mv3d.command(commandName,JM.AA3DMV.actionName);
     this._inActionStopped = true;
     console.log("Stop");
     return;
@@ -340,7 +340,7 @@ console.log($gamePlayer.mv3d_sprite.actions, "MoveStateActions started")
 
 
 let frame = 0;
-JM.AA3D.frame = frame;
+JM.AA3DMV.frame = frame;
 
 Game_Player.prototype._checkPlayerIsCasting = function(){
   if ($gamePlayer.ABSParams().casting) {
@@ -364,7 +364,7 @@ Game_Player.prototype.getProjData = function(key) {
 
 var _gP__performNoTargetAction = Game_Player.prototype._performNoTargetAction;
 Game_Player.prototype._performNoTargetAction = function() {
-  if(JM_AA3D.params['_useWalkRunSkill'] === true){
+  if(JM_AA3DMV.params['_useWalkRunSkill'] === true){
     console.log("noTargetAnim");
     if (this._StartFrameCounter === true) return; // NoTargetAnim finished?
     //console.log(Graphics.frameCount);
@@ -372,13 +372,13 @@ Game_Player.prototype._performNoTargetAction = function() {
     this._attackDir = this._mv3d_data.direction;
     let itemId = this._absParams.battler._equips[0]._itemId,
     name = $dataWeapons[itemId].name.toLowerCase().replace(/ /g,"");
-    JM.AA3D.actionName = name;
+    JM.AA3DMV.actionName = name;
   try{
-    this.frameMax = this.mv3d_sprite.actions[JM.AA3D.actionName][0]._to - 1;
+    this.frameMax = this.mv3d_sprite.actions[JM.AA3DMV.actionName][0]._to - 1;
     this._StartFrameCounter = true;
     this.MoveStateActions();
   }catch(error){
-    console.warn("Weapon", '"' + [JM.AA3D.actionName] + '"', "is missing a corresponding model action.");
+    console.warn("Weapon", '"' + [JM.AA3DMV.actionName] + '"', "is missing a corresponding model action.");
   }
   _gP__performNoTargetAction.call(this);
   }else{
@@ -394,43 +394,43 @@ Scene_Map.prototype.update = function(){
   _SceneMap_prototype_Update.call(this);
   //console.log(TouchInput.toPoint());
   //console.log($gamePlayer)
-const _gP = $gamePlayer, action = JM.AA3D.actionName;
+const _gP = $gamePlayer, action = JM.AA3DMV.actionName;
   if(_gP._StartFrameCounter === true){
-      ++JM.AA3D.frame;
-    (console.log(JM.AA3D.frame, "frame started"))
+      ++JM.AA3DMV.frame;
+    (console.log(JM.AA3DMV.frame, "frame started"))
     console.log(_gP.frameMax)
-    if(JM.AA3D.frame > _gP.frameMax){
+    if(JM.AA3DMV.frame > _gP.frameMax){
       _gP._inActionStopped = false;
       _gP._inActionMoving = false;
       _gP._inActionRunning = false;
       _gP._StartFrameCounter = false;
-      JM.AA3D.frame = 0;
+      JM.AA3DMV.frame = 0;
       console.log("flagging");
     }
     try{
       if(_gP._inActionStopped === true && _gP.mv3d_sprite.actions[action].isPlaying === false){
-        _gP.mv3d_sprite.actions[action.concat("walk")][0]._from = JM.AA3D.frame; //Last frame was
-        _gP.mv3d_sprite.actions[action.concat("run")][0]._from = JM.AA3D.frame; //Last frame was
-        _gP.mv3d_sprite.actions[action][0]._from = JM.AA3D.frame; //Last frame was
-        console.log("switchAnim1",JM.AA3D.frame);
+        _gP.mv3d_sprite.actions[action.concat("walk")][0]._from = JM.AA3DMV.frame; //Last frame was
+        _gP.mv3d_sprite.actions[action.concat("run")][0]._from = JM.AA3DMV.frame; //Last frame was
+        _gP.mv3d_sprite.actions[action][0]._from = JM.AA3DMV.frame; //Last frame was
+        console.log("switchAnim1",JM.AA3DMV.frame);
         _gP.MoveStateActions(); //Call 3D actions
         _gP.mv3d_sprite.actions[action.concat("walk")][0]._from = 0; //Reset frame
         _gP.mv3d_sprite.actions[action.concat("run")][0]._from = 0; //Reset frame
         _gP.mv3d_sprite.actions[action][0]._from = 0 //Reset frame
       }
       if(_gP._inActionMoving === true && _gP.mv3d_sprite.actions[action.concat("walk")].isPlaying === false){
-        _gP.mv3d_sprite.actions[action][0]._from = JM.AA3D.frame;
-        _gP.mv3d_sprite.actions[action.concat("run")][0]._from = JM.AA3D.frame;
-        console.log("Switch Anim2",JM.AA3D.frame);
+        _gP.mv3d_sprite.actions[action][0]._from = JM.AA3DMV.frame;
+        _gP.mv3d_sprite.actions[action.concat("run")][0]._from = JM.AA3DMV.frame;
+        console.log("Switch Anim2",JM.AA3DMV.frame);
         _gP.MoveStateActions(); //Call 3D actions
         _gP.mv3d_sprite.actions[action][0]._from = 0;
         _gP.mv3d_sprite.actions[action.concat("run")][0]._from = 0;
       }
 
       if(_gP._inActionRunning === true && _gP.mv3d_sprite.actions[action.concat("run")].isPlaying === false){
-        _gP.mv3d_sprite.actions[action][0]._from = JM.AA3D.frame;
-        _gP.mv3d_sprite.actions[action.concat("walk")][0]._from = JM.AA3D.frame;
-        console.log("switchAnim3",JM.AA3D.frame);
+        _gP.mv3d_sprite.actions[action][0]._from = JM.AA3DMV.frame;
+        _gP.mv3d_sprite.actions[action.concat("walk")][0]._from = JM.AA3DMV.frame;
+        console.log("switchAnim3",JM.AA3DMV.frame);
         _gP.MoveStateActions(); //Call 3D actions
         _gP.mv3d_sprite.actions[action][0]._from = 0;
         _gP.mv3d_sprite.actions[action.concat("walk")][0]._from = 0;
@@ -474,36 +474,36 @@ mv3d.Character.prototype.getActionName = function() {
 
 var _Game_Player__performSkillMotion = Game_Player.prototype._performSkillMotion;
 Game_Player.prototype._performSkillMotion = function() {
-  if (JM_AA3D.params['_useWalkRunSkill'] === true) {
+  if (JM_AA3DMV.params['_useWalkRunSkill'] === true) {
     console.log("Playerskill/item") //instant Player skills and items
     var Id = this._absParams.currentAction.skillId;
     //console.log(this);
     //this._cancelCastMotion();
     if (this._absParams.currentAction._isItem === true) {
       var itemName = $dataItems[Id].name;
-      JM.AA3D.actionName = itemName.toLowerCase();
+      JM.AA3DMV.actionName = itemName.toLowerCase();
       console.log("isItem", itemName)
         try{
-          this.frameMax = this.mv3d_sprite.actions[JM.AA3D.actionName][0]._to;
+          this.frameMax = this.mv3d_sprite.actions[JM.AA3DMV.actionName][0]._to;
           this._StartFrameCounter = true;
           this.MoveStateActions();
         } catch (error) {
-          console.warn("Item", '"' + [JM.AA3D.actionName] + '"',
+          console.warn("Item", '"' + [JM.AA3DMV.actionName] + '"',
           "is missing a corresponding model action @",
           this.mv3d_sprite.spriteOrigin._children[0].model_key.replace(/.\/models\/|0|\|/g,""), error);
         }
       } else if (this._absParams.casting === false) {
       var skillName = $dataSkills[Id].name;
 
-      JM.AA3D.actionName = skillName.toLowerCase();
+      JM.AA3DMV.actionName = skillName.toLowerCase();
       console.log("isSkill", skillName);
       //console.log(this);
         try{
-          this.frameMax = this.mv3d_sprite.actions[JM.AA3D.actionName][0]._to;
+          this.frameMax = this.mv3d_sprite.actions[JM.AA3DMV.actionName][0]._to;
           this._StartFrameCounter = true;
           this.MoveStateActions();
         }catch(error){
-          console.warn("Skill", '"' + [JM.AA3D.actionName] + '"', 
+          console.warn("Skill", '"' + [JM.AA3DMV.actionName] + '"', 
           "is missing a corresponding model action @", 
           this.mv3d_sprite.spriteOrigin._children[0].model_key.replace(/.\/models\/|0|\|/g,""));
         }
@@ -519,7 +519,7 @@ Game_Player.prototype._performSkillMotion = function() {
 
 var _Game_Player__performCastMotion = Game_Player.prototype._performCastMotion;
 Game_Player.prototype._performCastMotion = function(){
-  if(JM_AA3D.params['_useWalkRunSkill'] === true){
+  if(JM_AA3DMV.params['_useWalkRunSkill'] === true){
     //this._attackDir = this._mv3d_data.direction;
     console.log("playercast",this);
     var skillId = this._absParams.castingSkill.skillId;
@@ -539,7 +539,7 @@ Game_Player.prototype._performCastMotion = function(){
 var _Game_Player__cancelCastMotion = Game_Player.prototype._cancelCastMotion;
 Game_Player.prototype._cancelCastMotion = function(){
   console.log("playerActStopOutside")
-  if(JM_AA3D.params['_useWalkRunSkill'] === true){
+  if(JM_AA3DMV.params['_useWalkRunSkill'] === true){
     //if(this._absParams._inCastMotion === false){
       //return;
     //}
@@ -559,7 +559,7 @@ Game_Player.prototype._cancelCastMotion = function(){
 
 var _Game_AIBot__performCastMotion = Game_AIBot.prototype._performCastMotion;
 Game_AIBot.prototype._performCastMotion = function(){
-  if(JM_AA3D.params['_useWalkRunSkill'] === true){
+  if(JM_AA3DMV.params['_useWalkRunSkill'] === true){
     this._mv3d_data.direction = this._findDirectionToDiagonal($gamePlayer.x, $gamePlayer.y);
     //this._attackDir = this._findDirectionToDiagonal($gamePlayer.x, $gamePlayer.y);
     //console.log(this._findDirectionToDiagonal($gamePlayer.x, $gamePlayer.y));
@@ -584,7 +584,7 @@ Game_AIBot.prototype._performCastMotion = function(){
 var _Game_AIBot__cancelCastMotion = Game_AIBot.prototype._cancelCastMotion;
 Game_AIBot.prototype._cancelCastMotion = function(){
   console.log("cancelcastEn");
-  if (JM_AA3D.params['_useWalkRunSkill'] === true){
+  if (JM_AA3DMV.params['_useWalkRunSkill'] === true){
     if (this._absParams.currentAction != undefined){
     if (this._absParams._inCastMotion === false) { //TRUE??
       var skillId = this._absParams.currentAction.skillId;
@@ -604,7 +604,7 @@ Game_AIBot.prototype._cancelCastMotion = function(){
 
 var _Game_AIBot__performSkillMotion = Game_AIBot.prototype._performSkillMotion;
 Game_AIBot.prototype._performSkillMotion = function(){
-  if (JM_AA3D.params['_useWalkRunSkill'] === true){console.log(this._direction);
+  if (JM_AA3DMV.params['_useWalkRunSkill'] === true){console.log(this._direction);
     console.log(this._direction)
     this._mv3d_data.direction = this._findDirectionToDiagonal($gamePlayer.x, $gamePlayer.y);
     //this._direction = this._findDirectionToDiagonal($gamePlayer.x, $gamePlayer.y);
@@ -868,7 +868,7 @@ Game_AIBot.prototype.updateSelfMovement = function() {
 //--------------------------------------------------------------------------------
 // Game_Player: VectorSkill / 8dir fix
 
-Game_Player.prototype.AA3DfreeDirection = function(X, Y, rad) {
+Game_Player.prototype.AA3DMVfreeDirection = function(X, Y, rad) {
   // Convert angle to radians
   const angle = this._mv3d_data.blenders.direction * Math.PI / 180 * -1 + (Math.PI / 2);
   let _attackX, _attackY;
@@ -885,8 +885,8 @@ Game_Player.prototype._findEndPointForVectorSkill = function() {
   var absSkill;
   absSkill = this._absParams.currentAction;
   if (absSkill.isFreeDirection()) {
-    if (JM_AA3D.params['_useFreeDir'] === true) {
-      this.AA3DfreeDirection(this.x, this.y, 10); // Add radius adjustment?
+    if (JM_AA3DMV.params['_useFreeDir'] === true) {
+      this.AA3DMVfreeDirection(this.x, this.y, 10); // Add radius adjustment?
       var point = new KDCore.Point(this._attackX, this._attackY);
     }else{
       x = this.x, y = this.y;
@@ -918,12 +918,12 @@ Scene_Map.prototype.onMapLoaded = function(){
   _Scene_Map_onMapLoaded.call(this);
 
   // dispose() preloaded projectile particles for GamePlayer and AI
-  if (JM.AA3D.tempProjectile) {
-    for (let i = 0; i < Object.keys(JM.AA3D.tempProjectile.gP.particle).length; i++){
+  if (JM.AA3DMV.tempProjectile) {
+    for (let i = 0; i < Object.keys(JM.AA3DMV.tempProjectile.gP.particle).length; i++){
       //console.log(mv3d.scene.getMeshByID("sphereSpark"), Object.keys(ev.particle).length);
       mv3d.scene.getMeshByID("sphereSpark").dispose();
       }    
-      JM.AA3D.tempProjectile.forEach(ev => {
+      JM.AA3DMV.tempProjectile.forEach(ev => {
       for (let i = 0; i < Object.keys(ev.particle).length; i++){
       console.log(mv3d.scene.getMeshByID("sphereSpark"), Object.keys(ev.particle).length);
       mv3d.scene.getMeshByID("sphereSpark").dispose();
@@ -932,7 +932,7 @@ Scene_Map.prototype.onMapLoaded = function(){
   }
 
   // init tempProjectile------------------------------------------------------------
-  JM.AA3D.tempProjectile = [];
+  JM.AA3DMV.tempProjectile = [];
 
   var gP = "gP";
   console.log("MAPLOADED");
@@ -956,18 +956,18 @@ Scene_Map.prototype.onMapLoaded = function(){
 
     // Preload all particles and models from Game_Player Skill Panel -----------------
     $gamePlayer._absParams.battler._absParams.battleSkillsABS._skillsABS.forEach(m => {
-      JM.AA3D.tempProjectile[gP] = [];
-      JM.AA3D.tempProjectile[gP].model = [];
-      JM.AA3D.tempProjectile[gP].particle = [];
-      JM.AA3D.tempProjectile[gP].sprite = [];
+      JM.AA3DMV.tempProjectile[gP] = [];
+      JM.AA3DMV.tempProjectile[gP].model = [];
+      JM.AA3DMV.tempProjectile[gP].particle = [];
+      JM.AA3DMV.tempProjectile[gP].sprite = [];
         console.log(m);
-        console.log(JM_AA3D.params['_useProjectileModel'])
+        console.log(JM_AA3DMV.params['_useProjectileModel'])
       if (m.img != null && m.img != "null"){
-        if (((JM_AA3D.params['_useProjectileModel'] === 1) && !m.projectileNote) || m.projectileNote === "model"){
+        if (((JM_AA3DMV.params['_useProjectileModel'] === 1) && !m.projectileNote) || m.projectileNote === "model"){
           AlphaABS.LIBS.Game_SVector.prototype.asyncImportModel(gP, m.img);
           
         }
-        if (((JM_AA3D.params['_useProjectileModel'] === 3) && !m.projectileNote) || m.projectileNote === "particle"){
+        if (((JM_AA3DMV.params['_useProjectileModel'] === 3) && !m.projectileNote) || m.projectileNote === "particle"){
           AlphaABS.LIBS.Game_SVector.prototype.ImportParticle(gP, m.img);
           console.log(m.img);
           console.log(m.projectileNote);
@@ -980,11 +980,11 @@ Scene_Map.prototype.onMapLoaded = function(){
       if (Weap != null && Weap != "null" ){
         if (Weap.note != ""){
         console.log(Weap);
-        if (((JM_AA3D.params['_useProjectileModel'] === 1) && !Weap.meta.projectile) || Weap.meta.projectile === "model"){
+        if (((JM_AA3DMV.params['_useProjectileModel'] === 1) && !Weap.meta.projectile) || Weap.meta.projectile === "model"){
           AlphaABS.LIBS.Game_SVector.prototype.asyncImportModel(gP, Weap.meta.img);
           
         }
-        if (((JM_AA3D.params['_useProjectileModel'] === 3) && !Weap.meta.projectile) || Weap.meta.projectile === "particle"){
+        if (((JM_AA3DMV.params['_useProjectileModel'] === 3) && !Weap.meta.projectile) || Weap.meta.projectile === "particle"){
           AlphaABS.LIBS.Game_SVector.prototype.ImportParticle(gP, Weap.meta.img);
           console.log(Weap.meta.img);
           console.log(Weap.meta.projectile);
@@ -1006,20 +1006,20 @@ Scene_Map.prototype.onMapLoaded = function(){
           var skills = AI._absParams.battler._absParams.battleSkillsABS._skillsABS;
           //var eId = AI._eventId;
           //console.log(skills);
-          JM.AA3D.eId = AI._eventId;
-          JM.AA3D.tempProjectile[AI._eventId] = [];
-          JM.AA3D.tempProjectile[AI._eventId].model = [];
-          JM.AA3D.tempProjectile[AI._eventId].particle = [];
-          JM.AA3D.tempProjectile[AI._eventId].sprite = [];
+          JM.AA3DMV.eId = AI._eventId;
+          JM.AA3DMV.tempProjectile[AI._eventId] = [];
+          JM.AA3DMV.tempProjectile[AI._eventId].model = [];
+          JM.AA3DMV.tempProjectile[AI._eventId].particle = [];
+          JM.AA3DMV.tempProjectile[AI._eventId].sprite = [];
           for (let i = 0; i < skills.length; i++){
             //console.log(AI);
             var Skill = skills[i].img;
           //console.log(img);
             if (skills[i].img != null && skills[i].img != "null"){
-              if (((JM_AA3D.params['_useProjectileModel'] === 1) && !skills[i].projectileNote) || skills[i].projectileNote === "model"){
+              if (((JM_AA3DMV.params['_useProjectileModel'] === 1) && !skills[i].projectileNote) || skills[i].projectileNote === "model"){
                 AlphaABS.LIBS.Game_SVector.prototype.asyncImportModel(AI._eventId, Skill);
               }
-              if (((JM_AA3D.params['_useProjectileModel'] === 3) && !skills[i].projectileNote) || skills[i].projectileNote === "particle"){
+              if (((JM_AA3DMV.params['_useProjectileModel'] === 3) && !skills[i].projectileNote) || skills[i].projectileNote === "particle"){
                 AlphaABS.LIBS.Game_SVector.prototype.ImportParticle(AI._eventId, Skill);
                 //console.log("NotFlagging?")
               }
@@ -1028,7 +1028,7 @@ Scene_Map.prototype.onMapLoaded = function(){
           }
         } 
       }
-    }); //console.log(JM.AA3D.tempProjectile)
+    }); //console.log(JM.AA3DMV.tempProjectile)
   }, "1000");
 }
 
@@ -1074,7 +1074,7 @@ AlphaABS.LIBS.Game_SVector.prototype.asyncImportModel = async function(eId, imgN
   result.meshes[0].setEnabled(false); // Set preloaded models to disabled until used and refreshed.
   result.meshes.forEach(mesh => mesh.renderingGroupId = mv3d.enumRenderGroups.MAIN);
   //animationGroups[1].start(true);
-  JM.AA3D.tempProjectile[eId].model[imgName] = result.meshes[0];
+  JM.AA3DMV.tempProjectile[eId].model[imgName] = result.meshes[0];
 };
 
 // Projectile: Particle Async Loader -------------------------------------------------------
@@ -1111,11 +1111,11 @@ AlphaABS.LIBS.Game_SVector.prototype.ImportParticle = async function(eId, imgNam
     //myParticleSystem.emitRate = 5;
     myParticleSystem.renderingGroupId = mv3d.enumRenderGroups.MAIN;
   }
-  JM.AA3D.tempProjectile[eId].particle[imgName] = sphereSpark;
-  //JM.AA3D.tempProjectile[eId].particle[imgName].push(sphereSpark);
+  JM.AA3DMV.tempProjectile[eId].particle[imgName] = sphereSpark;
+  //JM.AA3DMV.tempProjectile[eId].particle[imgName].push(sphereSpark);
   
   //console.log(imgName);
-  //console.log(JM.AA3D.tempProjectile);
+  //console.log(JM.AA3DMV.tempProjectile);
 };
 
 // Projectile: Dispose ------------------------------------------------------------
@@ -1178,24 +1178,24 @@ AlphaABS.LIBS.Game_SVector.prototype._imageToPoint = function() {
   //console.log(this._imageSpr._animIndex);
   //console.log(this._imageSpr);
 
-  if (!this.name || (!this.projectileNote && JM_AA3D.params['_useProjectileModel'] === 2) || this.projectileNote === "sprite") { 
+  if (!this.name || (!this.projectileNote && JM_AA3DMV.params['_useProjectileModel'] === 2) || this.projectileNote === "sprite") { 
     try{
       this.texture.uOffset = this._imageSpr._texture._uvs.x1;
     }catch (e) {
       this.texture.uOffset = 0;
     }
     rotDir2 = Math.PI / 2;
-  } else if (((!this.projectileNote) && (JM_AA3D.params['_useProjectileModel'] === 1)) && this.name || this.projectileNote === "model") {
+  } else if (((!this.projectileNote) && (JM_AA3DMV.params['_useProjectileModel'] === 1)) && this.name || this.projectileNote === "model") {
       this.projectile.setEnabled(true);
       var rotDir2 = 0;
       //this.rotDir = (this._data.subject._mv3d_data.blenders.direction) * Math.PI / 180 * -1 + Math.PI / 2;
       //console.log(this._imageSpr.parent.rotation);
       //console.log(this.projectileNote);
-  } else if ((!this.projectileNote && JM_AA3D.params['_useProjectileModel'] === 3) || this.projectileNote === "particle"){ // Particle
+  } else if ((!this.projectileNote && JM_AA3DMV.params['_useProjectileModel'] === 3) || this.projectileNote === "particle"){ // Particle
       var rotDir2 = 0;
   }
   //this._data.skill.freeDirection === 1 &&
-  //if (JM_AA3D.params['_useProjectileModel'] === 1) {
+  //if (JM_AA3DMV.params['_useProjectileModel'] === 1) {
   //  this.projectile.rotation = new BABYLON.Vector3(this.rotDir2, this.rotDir, 0);
     //console.log(this.projectile)
   //} else {
@@ -1285,7 +1285,7 @@ AlphaABS.LIBS.Game_SVector.prototype._setImage = function(name) {
       }
       this.projectileNote = this._data.skill.projectileNote;
      
-      if ((!this.projectileNote && JM_AA3D.params['_useProjectileModel'] === 2) || this.projectileNote === "sprite") {
+      if ((!this.projectileNote && JM_AA3DMV.params['_useProjectileModel'] === 2) || this.projectileNote === "sprite") {
         imgSpr = new AlphaABS.LIBS.Sprite_Vector(name);
         this.texture = new BABYLON.Texture(imgSpr._bitmap.url, scene);
         //this.rotDir = (this._data.subject._mv3d_data.blenders.direction) * Math.PI / 180 * -1 + Math.PI / 2;
@@ -1297,30 +1297,30 @@ AlphaABS.LIBS.Game_SVector.prototype._setImage = function(name) {
       
       
       //console.log(imgSpr._frameCount)
-      if (((!this.projectileNote) && JM_AA3D.params['_useProjectileModel'] === 1) || this.projectileNote === "model") { // && JM.AA3D[$gamePlayer._absParams.currentAction.img] != undefined
-        //if (JM.AA3D.tempProjectile[this._data.subject._eventId].model[name] != undefined) {
-          this.projectile = JM.AA3D.tempProjectile[this._data.subject._eventId].model[name];
+      if (((!this.projectileNote) && JM_AA3DMV.params['_useProjectileModel'] === 1) || this.projectileNote === "model") { // && JM.AA3DMV[$gamePlayer._absParams.currentAction.img] != undefined
+        //if (JM.AA3DMV.tempProjectile[this._data.subject._eventId].model[name] != undefined) {
+          this.projectile = JM.AA3DMV.tempProjectile[this._data.subject._eventId].model[name];
           this.asyncImportModel([this._data.subject._eventId], name);
         //} else {
-          //JM.AA3D[$gamePlayer._absParams.currentAction.img]
-        //  this.projectile = JM.AA3D.tempProjectile[JM.AA3D.eId].model[name];
-        //  this.asyncImportModel([JM.AA3D.eId], name);
+          //JM.AA3DMV[$gamePlayer._absParams.currentAction.img]
+        //  this.projectile = JM.AA3DMV.tempProjectile[JM.AA3DMV.eId].model[name];
+        //  this.asyncImportModel([JM.AA3DMV.eId], name);
         //}
         console.log(this)
         console.log("MODEL");
-      } else if (((!this.projectileNote) && JM_AA3D.params['_useProjectileModel'] === 3) || this.projectileNote === "particle"){
-        //if (JM.AA3D.tempProjectile[this._data.subject._eventId].particle[name] != undefined) {
-          this.projectile = JM.AA3D.tempProjectile[this._data.subject._eventId].particle[name];
+      } else if (((!this.projectileNote) && JM_AA3DMV.params['_useProjectileModel'] === 3) || this.projectileNote === "particle"){
+        //if (JM.AA3DMV.tempProjectile[this._data.subject._eventId].particle[name] != undefined) {
+          this.projectile = JM.AA3DMV.tempProjectile[this._data.subject._eventId].particle[name];
           this.ImportParticle([this._data.subject._eventId], name);
         //} else {
         //  if (this._data.subject === $gamePlayer) {
         //    var gP = "gP";
         //    console.log("$gamePlayer");
         //  }
-        //  this.projectile = JM.AA3D.tempProjectile[gP].particle[name];
-        //  console.log("PARTICLE CATCH", JM.AA3D.tempProjectile[gP].particle[name]);
+        //  this.projectile = JM.AA3DMV.tempProjectile[gP].particle[name];
+        //  console.log("PARTICLE CATCH", JM.AA3DMV.tempProjectile[gP].particle[name]);
         //  this.ImportParticle(gP, name);
-        //  console.log(JM.AA3D.tempProjectile[JM.AA3D.eId].particle[name])
+        //  console.log(JM.AA3DMV.tempProjectile[JM.AA3DMV.eId].particle[name])
         //}
         //console.log(this._data.subject);
         console.log("PARTICLE");
@@ -1339,8 +1339,8 @@ AlphaABS.LIBS.Game_SVector.prototype._setImage = function(name) {
         material.specularColor.set(1,1,1);
         material.maxSimultaneousLights = 25;
         projectile.material = material;
-        JM.AA3D.tempProjectile[JM.AA3D.eId].sprite[name] = projectile;
-        this.projectile = JM.AA3D.tempProjectile[JM.AA3D.eId].sprite[name];
+        JM.AA3DMV.tempProjectile[JM.AA3DMV.eId].sprite[name] = projectile;
+        this.projectile = JM.AA3DMV.tempProjectile[JM.AA3DMV.eId].sprite[name];
         console.log("SPRITE");
         console.log(this.projectile);
        }
