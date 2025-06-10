@@ -34,8 +34,7 @@ Adaptations:<br>
 <freeDirection:1> Skill Note tags have been adapted to use the direction your character is facing (360 degree attacking) or 8 Dir aiming to use freeDirection as a patch for 8 direction attacks. (These are specifically 
 added for use with my UniformCameraPlayerFace extension for MV3D but either will work still without it) TODO: Patch original use case (aim skills based on Clicking on the map) + be able to use both.
 
-TODO<br>
-Will be adding more mouse modes (Current behavior: Right click releases the mouse and left click locks the mouse camera again)
+Current Mouse Behavior: Right click releases the mouse and left click locks the mouse camera again.
 
 Compatibility & Performance:<br>
 Pathfinding<br>
