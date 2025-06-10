@@ -7,7 +7,7 @@ JM.AA3D.Version = "0.9.2";
 
 /*:
 *@plugindesc Compatibility and cross-feature adaptation patch for MV3D V.9.2.7 (by Cutievirus), AlphaABS V.1250[PRO] (by Kage Desu), and QMovement (by Quxios).
-*@author JankyMouse | Version: 0.7 (beta)
+*@author JankyMouse | Version: 0.9.2
 
 *@param _useWalkRunSkill
 *@text Use automatic 3D actions?
